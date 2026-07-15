@@ -1,0 +1,39 @@
+the asparagus, L'asperge
+the zucchini, La courgette
+the squash, La courge
+the pumpkin, La citrouille
+the artichoke, L'artichaut
+the Brussels sprouts, Les choux de Bruxelles
+the lettuce, La laitue
+the spinach, Les épinard
+the cauliflower, Le chou-fleur
+the cabbage, Le chou
+the kale, Le chou frisé
+the arugala, La roquette
+the bok-choy, Le Pak-choi
+The seaweed, Les algues comestibles, f
+The eggplant, L'aubergine, f
+the bell pepper, Le poivron
+The cucumber, Le concombre
+the olive, L'olive, f
+The leek, Le poireau
+the shallot, L'échalote, f
+the chive, La ciboulette
+the potato, La pomme de terre
+the sweet potato, La patate douce
+the yam, L'igname, f
+the radish, Le radis
+the turnip, La navet
+the lentils, Les lentilles, f
+the chickpeas, Les pois chiches, m
+the peas, Les pois, m
+the carrot, La carotte
+the beetroot, Le betterave
+the parsnip, Le panais
+the celery, Le céleri
+the rhubarb, La rhubarbe
+the bamboo shoot, la pousse de bambou
+the fennel, le fenouil
+the scallion, La ciboule
+the sugar cane, La canne à sucre
+the ginger, Le gingembre
