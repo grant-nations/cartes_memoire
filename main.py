@@ -5,7 +5,7 @@ import re
 
 METADATA_FILENAME = "meta.txt"
 PAQUETS_DIRNAME = "paquets"
-GREEN = "\033[0;32m"
+CYAN = "\033[0;36m"
 YELLOW = "\033[0;33m"
 RESET = "\033[0m"
 
@@ -75,7 +75,7 @@ def wait_for_enter() -> None:
 def wait_for_correct_answer(answer: str) -> None:
     while True:
         if (
-            input(f"Tape {GREEN}{answer}{RESET} pour continuer: ").strip().lower()
+            input(f"Tape {CYAN}{answer}{RESET} pour continuer: ").strip().lower()
             == answer
         ):
             break
@@ -109,10 +109,10 @@ def run_exercise(paquet_filename: str, root_path: str) -> None:
                 correct = True
 
         if correct:
-            print(f"{GREEN}Correct.{RESET}")
+            print(f"{CYAN}Correct.{RESET}")
             wait_for_enter()
         else:
-            print(f"{YELLOW}Incorrect{RESET}. Bonne réponse: {GREEN}{answer}{RESET}")
+            print(f"{YELLOW}Incorrect{RESET}. Bonne réponse: {CYAN}{answer}{RESET}")
             wait_for_correct_answer(answer)
             prompts_answers_genders.insert(0, (prompt, answer, gender))
 
