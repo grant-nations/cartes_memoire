@@ -2,6 +2,7 @@
 
 import os
 import re
+import argparse
 
 METADATA_FILENAME = "meta.txt"
 PAQUETS_DIRNAME = "paquets"
@@ -123,7 +124,17 @@ def run_exercise(paquet_filename: str, root_path: str) -> None:
         clear_terminal()
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-q", "--queue", action="store_true", help="Jeter un coup d'œuil à la queue"
+    )
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
+    args = parse_args()
+
     root = os.path.dirname(__file__)
     metadata_path = os.path.join(root, METADATA_FILENAME)
 
@@ -132,6 +143,14 @@ if __name__ == "__main__":
 
     if len(paquets_queue) == 0:
         print("Aucun paquet trouvé ; il n'y a rien à faire.")
+
+    if args.queue:
+        print("Queue:")
+        for paquet in paquets_queue[:-1]:
+            print(f"  - {paquet}")
+
+        print(f"  - {paquets_queue[-1]} {CYAN}<-- On est là{RESET}")
+        exit(0)
 
     paquet = paquets_queue.pop()
 
