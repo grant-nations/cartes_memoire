@@ -1,6 +1,9 @@
+le_quotidien_de_la_boulangerie.txt
 les_legumes.txt
 les_céréales_et_les_farines.txt
 les_ingrédients.txt
 la_cuisson_et_le_matériel.txt
 les_étapes_de_la_boulangerie.txt
 la_fermantation.txt
+les_produits_de_la_boulangerie.txt
+le_quotidien_chez_christophe_et_valérie.txt

@@ -9,6 +9,7 @@ CYAN = "\033[0;36m"
 YELLOW = "\033[0;33m"
 RESET = "\033[0m"
 BOLD_WHITE = "\033[1;37m"
+OVERRIDE = "outrepasser"
 
 
 def read_metadata(filepath: str) -> list[str]:
@@ -75,10 +76,8 @@ def wait_for_enter() -> None:
 
 def wait_for_correct_answer(answer: str) -> None:
     while True:
-        if (
-            input(f"Tape {CYAN}{answer}{RESET} pour continuer: ").strip().lower()
-            == answer
-        ):
+        _input = input(f"Tape {CYAN}{answer}{RESET} pour continuer: ").strip().lower()
+        if _input == answer or _input == OVERRIDE:
             break
 
 
