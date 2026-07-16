@@ -1,8 +1,11 @@
 #!/usr/bin/python3
+# PYTHON_ARGCOMPLETE_OK
 
 import os
 import re
 import argparse
+import argcomplete
+from argcomplete.completers import ChoicesCompleter
 
 METADATA_FILENAME = "meta.txt"
 PAQUETS_DIRNAME = "paquets"
@@ -75,11 +78,16 @@ def wait_for_enter() -> None:
             break
 
 
-def wait_for_correct_answer(answer: str) -> None:
+def wait_for_correct_answer(answer: str) -> bool:
+    """
+    Returns True if answer is overridden as true.
+    """
     while True:
         _input = input(f"Tape {CYAN}{answer}{RESET} pour continuer: ").strip().lower()
-        if _input == answer or _input == OVERRIDE:
-            break
+        if _input == OVERRIDE:
+            return True
+        elif _input == answer:
+            return False
 
 
 def clear_terminal() -> None:
@@ -87,7 +95,7 @@ def clear_terminal() -> None:
 
 
 def run_exercise(paquet_filename: str, root_path: str) -> None:
-    paquet_name = paquet_filename.replace("_", " ").capitalize()
+    paquet_name = paquet_filename.replace("_", " ").replace(".csv", "").capitalize()
     print(f"{BOLD_WHITE}{paquet_name}{RESET}")
     wait_for_enter()
 
@@ -118,22 +126,26 @@ def run_exercise(paquet_filename: str, root_path: str) -> None:
             wait_for_enter()
         else:
             print(f"{YELLOW}Incorrect{RESET}. Bonne réponse: {CYAN}{answer}{RESET}")
-            wait_for_correct_answer(answer)
-            prompts_answers_genders.insert(0, (prompt, answer, gender))
+            override = wait_for_correct_answer(answer)
+            if not override:
+                prompts_answers_genders.insert(0, (prompt, answer, gender))
 
         clear_terminal()
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(paquets_queue: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-q", "--queue", action="store_true", help="Jeter un coup d'œuil à la queue"
     )
+    parser.add_argument("paquet").completer = ChoicesCompleter(paquets_queue)
+
+    argcomplete.autocomplete(parser)
+
     return parser.parse_args()
 
 
 if __name__ == "__main__":
-    args = parse_args()
 
     root = os.path.dirname(__file__)
     metadata_path = os.path.join(root, METADATA_FILENAME)
@@ -144,6 +156,8 @@ if __name__ == "__main__":
     if len(paquets_queue) == 0:
         print("Aucun paquet trouvé ; il n'y a rien à faire.")
 
+    args = parse_args(paquets_queue)
+
     if args.queue:
         print("Queue:")
         for paquet in paquets_queue[:-1]:
@@ -152,7 +166,14 @@ if __name__ == "__main__":
         print(f"  - {paquets_queue[-1]} {CYAN}<-- On est là{RESET}")
         exit(0)
 
-    paquet = paquets_queue.pop()
+    index_to_pop = -1
+    if args.paquet:
+        try:
+            index_to_pop = paquets_queue.index(args.paquet)
+        except ValueError:
+            print(f"{YELLOW}ATTENTION:{RESET} Paquet {args.paquet} introuvable")
+
+    paquet = paquets_queue.pop(index_to_pop)
 
     run_exercise(paquet, root)
 
