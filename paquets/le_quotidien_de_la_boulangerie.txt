@@ -1,0 +1,10 @@
+the baker (male), le boulanger
+the baker (female), la boulangère
+the bakery, la boulangerie
+the customer, le client
+the order, la commande
+the production, la production
+the apron, le tablier
+the work surface, le plan de travail
+to clean, nettoyer
+the hygiene, l'hygiène, f

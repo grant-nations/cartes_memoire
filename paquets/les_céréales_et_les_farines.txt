@@ -1,0 +1,10 @@
+the wheat, le blé
+the rye, le seigle
+the spelt, l'épeautre, f
+the barley, l'orge, f
+the oats, l'avoine, f
+the corn, le maïs
+the millet, le millet
+the flour, la farine
+the semi-wholemeal flour, la farine semi-complète
+the wholemeal flour, la farine complète
