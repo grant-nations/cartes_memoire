@@ -1,0 +1,14 @@
+the dough, la pâte
+the proofing, la levée
+the yeast, la levure
+the sourdough starter, le levain
+the water, l'eau, f
+the salt, le sel
+the sugar, le sucre
+the butter, le beurre
+the egg, l'œuf, m
+the seed, la graine
+the sunflower seeds, les graines de tournesol, f
+the pumpkin seeds, les graines de courge, f
+the flax seeds, les graines de lin, f
+the bran, le son

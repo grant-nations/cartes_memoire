@@ -8,6 +8,7 @@ PAQUETS_DIRNAME = "paquets"
 CYAN = "\033[0;36m"
 YELLOW = "\033[0;33m"
 RESET = "\033[0m"
+BOLD_WHITE = "\033[1;37m"
 
 
 def read_metadata(filepath: str) -> list[str]:
@@ -86,6 +87,10 @@ def clear_terminal() -> None:
 
 
 def run_exercise(paquet_filename: str, root_path: str) -> None:
+    paquet_name = paquet_filename.replace("_", " ").capitalize()
+    print(f"{BOLD_WHITE}{paquet_name}{RESET}")
+    wait_for_enter()
+
     clear_terminal()
     paquet_filepath = os.path.join(root_path, PAQUETS_DIRNAME, paquet_filename)
 

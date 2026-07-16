@@ -1,11 +1,11 @@
-the asparagus, L'asperge
+the asparagus, L'asperge, f
 the zucchini, La courgette
 the squash, La courge
 the pumpkin, La citrouille
-the artichoke, L'artichaut
-the Brussels sprouts, Les choux de Bruxelles
+the artichoke, L'artichaut, m
+the Brussels sprouts, Les choux de Bruxelles, m
 the lettuce, La laitue
-the spinach, Les épinard
+the spinach, Les épinards, m
 the cauliflower, Le chou-fleur
 the cabbage, Le chou
 the kale, Le chou frisé
