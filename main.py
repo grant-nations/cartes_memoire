@@ -1,11 +1,8 @@
 #!/usr/bin/python3
-# PYTHON_ARGCOMPLETE_OK
 
 import os
 import re
 import argparse
-import argcomplete
-from argcomplete.completers import ChoicesCompleter
 
 METADATA_FILENAME = "meta.txt"
 PAQUETS_DIRNAME = "paquets"
@@ -135,12 +132,11 @@ def run_exercise(paquet_filename: str, root_path: str) -> None:
 
 def parse_args(paquets_queue: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser()
+
     parser.add_argument(
         "-q", "--queue", action="store_true", help="Jeter un coup d'œuil à la queue"
     )
-    parser.add_argument("paquet").completer = ChoicesCompleter(paquets_queue)
-
-    argcomplete.autocomplete(parser)
+    parser.add_argument("-p", "--paquet", help="Choisir le paquet à réviser.", choices=paquets_queue)
 
     return parser.parse_args()
 
@@ -151,7 +147,13 @@ if __name__ == "__main__":
     metadata_path = os.path.join(root, METADATA_FILENAME)
 
     paquets_queue = read_metadata(metadata_path)
+    old_len = len(paquets_queue)
+
     update_paquets_queue(paquets_queue, root)
+    new_len = len(paquets_queue)
+
+    if new_len - old_len > 0:
+        write_metadata(metadata_path, paquets_queue)
 
     if len(paquets_queue) == 0:
         print("Aucun paquet trouvé ; il n'y a rien à faire.")
