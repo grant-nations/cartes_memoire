@@ -3,6 +3,7 @@
 import os
 import re
 import argparse
+import random
 
 METADATA_FILENAME = "meta.txt"
 PAQUETS_DIRNAME = "paquets"
@@ -80,7 +81,7 @@ def wait_for_enter() -> None:
 
 def wait_for_correct_answer(answer: str) -> bool:
     """
-    Returns True if answer is overridden as true.
+    Waits for return; returns True if answer is overridden as true via `OVERRIDE`.
     """
     while True:
         _input = input(f"Tape {CYAN}{answer}{RESET} pour continuer: ").strip().lower()
@@ -103,6 +104,7 @@ def run_exercise(paquet_filename: str, root_path: str) -> None:
     paquet_filepath = os.path.join(root_path, PAQUETS_DIRNAME, paquet_filename)
 
     prompts_answers_genders = read_paquet(paquet_filepath)
+    random.shuffle(prompts_answers_genders)
 
     while len(prompts_answers_genders) > 0:
         remaining = len(prompts_answers_genders)
