@@ -50,18 +50,21 @@ def read_paquet(filepath: str) -> list[tuple[str, str, str]]:
 
 def update_paquets_queue(paquet_queue: list[str], root_path: str) -> None:
     paquets_set = set(paquets_queue)
-    new_paquets_set = set()
+    all_packets_set = set()
 
     paquets_dirpath = os.path.join(root_path, PAQUETS_DIRNAME)
 
     for file_or_dir in os.listdir(paquets_dirpath):
         if os.path.isfile(os.path.join(paquets_dirpath, file_or_dir)):
-            new_paquets_set.add(file_or_dir)
+            all_packets_set.add(file_or_dir)
 
-    new_paquets_set = new_paquets_set - paquets_set
+    new_paquets_set = all_packets_set - paquets_set
     for new_paquet in new_paquets_set:
         paquet_queue.append(new_paquet)
 
+    paquets_to_rm_set = paquets_set - all_packets_set
+    for paquet_to_rm in paquets_to_rm_set:
+        paquets_queue.remove(paquet_to_rm)
 
 def gender_ambiguous(answer: str) -> bool:
     pattern = r"(l'.*?(\s|$))|(les\s)"
