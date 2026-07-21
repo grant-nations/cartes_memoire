@@ -1,3 +1,5 @@
+les_outils.csv
+les_étapes_de_la_boulangerie.csv
 les_legumes.csv
 le_quotidien_de_la_boulangerie.csv
 la_fermentation.csv
@@ -11,4 +13,3 @@ la_cuisson_et_le_matériel.csv
 les_produits_de_la_boulangerie.csv
 les_céréales_et_les_farines.csv
 les_nombres_2.csv
-les_étapes_de_la_boulangerie.csv
