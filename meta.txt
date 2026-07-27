@@ -1,3 +1,5 @@
+les_produits_de_la_boulangerie.csv
+les_céréales_et_les_farines.csv
 les_nombres_2.csv
 le_quotidien_1.csv
 les_outils.csv
@@ -11,5 +13,3 @@ la_ferme_1.csv
 les_conteneurs.csv
 les_nombres_1.csv
 la_cuisson_et_le_matériel.csv
-les_produits_de_la_boulangerie.csv
-les_céréales_et_les_farines.csv
