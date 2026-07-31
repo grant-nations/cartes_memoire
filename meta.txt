@@ -14,3 +14,6 @@ la_fermentation.csv
 la_ferme_2.csv
 les_ingrédients.csv
 la_ferme_1.csv
+les_parties_du_corps_3.csv
+les_parties_du_corps_2.csv
+les_parties_du_corps_1.csv

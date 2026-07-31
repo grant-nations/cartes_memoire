@@ -127,7 +127,11 @@ def run_exercise(paquet_filename: str, root_path: str) -> None:
             print(f"{CYAN}Correct.{RESET}")
             wait_for_enter()
         else:
-            print(f"{YELLOW}Incorrect{RESET}. Bonne réponse: {CYAN}{answer}{RESET}")
+            message = f"{YELLOW}Incorrect{RESET}. Bonne réponse: {CYAN}{answer}{RESET}"
+
+            if gender is not None: message += f"{CYAN} ({gender}.) {RESET}"
+
+            print(message)
             override = wait_for_correct_answer(answer)
             if not override:
                 prompts_answers_genders.insert(0, (prompt, answer, gender))
