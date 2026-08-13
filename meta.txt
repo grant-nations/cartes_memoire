@@ -1,3 +1,11 @@
+la_ferme_2.csv
+les_ingrédients.csv
+le_quotidien_3.csv
+la_ferme_1.csv
+les_parties_du_corps_3.csv
+les_parties_du_corps_2.csv
+les_légumes.csv
+les_parties_du_corps_1.csv
 les_contenants.csv
 les_nombres_1.csv
 les_outils.csv
@@ -8,12 +16,5 @@ les_céréales_et_les_farines.csv
 les_nombres_2.csv
 le_quotidien_1.csv
 les_étapes_de_la_boulangerie.csv
-les_legumes.csv
 le_quotidien_de_la_boulangerie.csv
 la_fermentation.csv
-la_ferme_2.csv
-les_ingrédients.csv
-la_ferme_1.csv
-les_parties_du_corps_3.csv
-les_parties_du_corps_2.csv
-les_parties_du_corps_1.csv
