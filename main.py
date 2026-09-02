@@ -139,13 +139,13 @@ def run_exercise(paquet_filename: str, root_path: str) -> None:
         clear_terminal()
 
 
-def parse_args(paquets_queue: list[str]) -> argparse.Namespace:
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
         "-q", "--queue", action="store_true", help="Jeter un coup d'œuil à la queue"
     )
-    parser.add_argument("-p", "--paquet", help="Choisir le paquet à réviser.", choices=paquets_queue)
+    parser.add_argument("-p", "--paquet", help="Choisir le paquet à réviser.")
 
     return parser.parse_args()
 
@@ -167,7 +167,7 @@ if __name__ == "__main__":
     if len(paquets_queue) == 0:
         print("Aucun paquet trouvé ; il n'y a rien à faire.")
 
-    args = parse_args(paquets_queue)
+    args = parse_args()
 
     if args.queue:
         print("Queue:")
