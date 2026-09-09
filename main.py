@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 METADATA_FILENAME = "meta.csv"
 PAQUETS_DIRNAME = "paquets"
 CYAN = "\033[0;36m"
+GREEN = "\033[0;32m"
 YELLOW = "\033[0;33m"
 RESET = "\033[0m"
 BOLD_WHITE = "\033[1;37m"
@@ -81,6 +82,14 @@ def update_paquets_queue(paquet_queue: list[tuple[str, str]], root_path: str) ->
     paquets_to_rm_set = paquet_names_set - all_packet_names_set
     for paquet_name_to_rm in paquets_to_rm_set:
         paquets_queue.remove(paquet_name_to_queue_entry[paquet_name_to_rm])
+
+
+def get_index_by_paquet_name(paquets_queue: list[tuple[str, str]], paquet_name: str) -> int:
+    for i, p in enumerate(paquets_queue):
+        if p[0] == paquet_name:
+            return i
+
+    raise ValueError
 
 
 def gender_ambiguous(answer: str) -> bool:
@@ -178,28 +187,37 @@ if __name__ == "__main__":
     update_paquets_queue(paquets_queue, root)
     new_len = len(paquets_queue)
 
-    if new_len - old_len > 0:
+    if new_len - old_len != 0:
         write_metadata(metadata_path, paquets_queue)
 
     if len(paquets_queue) == 0:
         print("Aucun paquet trouvé ; il n'y a rien à faire.")
+        exit(0)
 
     args = parse_args()
 
     if args.queue:
         print("Queue:")
         for paquet in paquets_queue[:-1]:
-            print(f"  - {" ".join(paquet)}")
+            paquet_str = f"  - {paquet[0]}"
+            if paquet[1] != "":
+                paquet_str += f" {GREEN}({paquet[1]}){RESET}"
+            print(paquet_str)
 
-        print(f"  - {" ".join(paquets_queue[-1])} {CYAN}<-- On est là{RESET}")
+        final_paquet_str = f"  - {paquets_queue[-1][0]}"
+        if paquets_queue[-1][1] != "":
+            final_paquet_str += f" {GREEN}({paquets_queue[-1][1]}){RESET}"
+        final_paquet_str += f" {CYAN}<-- On est là{RESET}"
+        print(final_paquet_str)
         exit(0)
 
     index_to_pop = -1
     if args.paquet:
         try:
-            index_to_pop = paquets_queue.index(args.paquet)
+            index_to_pop = get_index_by_paquet_name(paquets_queue, args.paquet)
         except ValueError:
             print(f"{YELLOW}ATTENTION:{RESET} Paquet {args.paquet} introuvable")
+            exit(1)
 
     paquet_name, paquet_date = paquets_queue.pop(index_to_pop)
 
