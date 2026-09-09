@@ -4,32 +4,46 @@ import os
 import re
 import argparse
 import random
+from datetime import datetime, timezone
 
-METADATA_FILENAME = "meta.txt"
+METADATA_FILENAME = "meta.csv"
 PAQUETS_DIRNAME = "paquets"
 CYAN = "\033[0;36m"
 YELLOW = "\033[0;33m"
 RESET = "\033[0m"
 BOLD_WHITE = "\033[1;37m"
 OVERRIDE = "outrepasser"
+DATETIME_FORMAT = "%Y-%m-%d %H:%M"
 
 
-def read_metadata(filepath: str) -> list[str]:
+def read_metadata(filepath: str) -> list[tuple[str, str]]:
     """
     Metadata is list of paquet filenames separated by a newline.
     """
     try:
         with open(filepath, "r") as f:
-            paquets = [line.strip() for line in f.readlines()]
+            lines = [line.strip() for line in f.readlines()]
     except FileNotFoundError:
-        paquets = []
+        lines = []
+
+    # The second element will be a date string formatted as yyyy-mm-dd hh:mm
+    paquets = []
+    for l in lines:
+        p = l.split(",")
+        if len(p) < 2:
+            p.append("")  # Correct for packets missing timestamp
+        paquets.append(p)
 
     return paquets
 
 
-def write_metadata(filepath: str, paquets_queue: list[str]) -> None:
+def get_datetime_str() -> str:
+    return datetime.now(timezone.utc).strftime(DATETIME_FORMAT)
+
+
+def write_metadata(filepath: str, paquets_queue: list[tuple[str, str]]) -> None:
     with open(filepath, "w") as f:
-        f.writelines([p + "\n" for p in paquets_queue])
+        f.writelines([",".join(p) + "\n" for p in paquets_queue])
 
 
 def read_paquet(filepath: str) -> list[tuple[str, str, str]]:
@@ -49,23 +63,25 @@ def read_paquet(filepath: str) -> list[tuple[str, str, str]]:
     return prompts_answers_genders
 
 
-def update_paquets_queue(paquet_queue: list[str], root_path: str) -> None:
-    paquets_set = set(paquets_queue)
-    all_packets_set = set()
+def update_paquets_queue(paquet_queue: list[tuple[str, str]], root_path: str) -> None:
+    paquet_name_to_queue_entry = {p[0]: p for p in paquets_queue}
+    paquet_names_set = set(paquet_name_to_queue_entry.keys())
+    all_packet_names_set = set()
 
     paquets_dirpath = os.path.join(root_path, PAQUETS_DIRNAME)
 
     for file_or_dir in os.listdir(paquets_dirpath):
         if os.path.isfile(os.path.join(paquets_dirpath, file_or_dir)):
-            all_packets_set.add(file_or_dir)
+            all_packet_names_set.add(file_or_dir)
 
-    new_paquets_set = all_packets_set - paquets_set
-    for new_paquet in new_paquets_set:
-        paquet_queue.append(new_paquet)
+    new_paquet_names_set = all_packet_names_set - paquet_names_set
+    for new_paquet_name in new_paquet_names_set:
+        paquet_queue.append((new_paquet_name, get_datetime_str()))
 
-    paquets_to_rm_set = paquets_set - all_packets_set
-    for paquet_to_rm in paquets_to_rm_set:
-        paquets_queue.remove(paquet_to_rm)
+    paquets_to_rm_set = paquet_names_set - all_packet_names_set
+    for paquet_name_to_rm in paquets_to_rm_set:
+        paquets_queue.remove(paquet_name_to_queue_entry[paquet_name_to_rm])
+
 
 def gender_ambiguous(answer: str) -> bool:
     pattern = r"(l'.*?(\s|$))|(les\s)"
@@ -129,7 +145,8 @@ def run_exercise(paquet_filename: str, root_path: str) -> None:
         else:
             message = f"{YELLOW}Incorrect{RESET}. Bonne réponse: {CYAN}{answer}{RESET}"
 
-            if gender is not None: message += f"{CYAN} ({gender}.) {RESET}"
+            if gender is not None:
+                message += f"{CYAN} ({gender}.) {RESET}"
 
             print(message)
             override = wait_for_correct_answer(answer)
@@ -155,7 +172,7 @@ if __name__ == "__main__":
     root = os.path.dirname(__file__)
     metadata_path = os.path.join(root, METADATA_FILENAME)
 
-    paquets_queue = read_metadata(metadata_path)
+    paquets_queue: list[tuple[str, str]] = read_metadata(metadata_path)
     old_len = len(paquets_queue)
 
     update_paquets_queue(paquets_queue, root)
@@ -172,9 +189,9 @@ if __name__ == "__main__":
     if args.queue:
         print("Queue:")
         for paquet in paquets_queue[:-1]:
-            print(f"  - {paquet}")
+            print(f"  - {" ".join(paquet)}")
 
-        print(f"  - {paquets_queue[-1]} {CYAN}<-- On est là{RESET}")
+        print(f"  - {" ".join(paquets_queue[-1])} {CYAN}<-- On est là{RESET}")
         exit(0)
 
     index_to_pop = -1
@@ -184,9 +201,9 @@ if __name__ == "__main__":
         except ValueError:
             print(f"{YELLOW}ATTENTION:{RESET} Paquet {args.paquet} introuvable")
 
-    paquet = paquets_queue.pop(index_to_pop)
+    paquet_name, paquet_date = paquets_queue.pop(index_to_pop)
 
-    run_exercise(paquet, root)
+    run_exercise(paquet_name, root)
 
-    paquets_queue.insert(0, paquet)
+    paquets_queue.insert(0, (paquet_name, get_datetime_str()))
     write_metadata(metadata_path, paquets_queue)
