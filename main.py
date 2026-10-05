@@ -165,13 +165,35 @@ def run_exercise(paquet_filename: str, root_path: str) -> None:
         clear_terminal()
 
 
+def view_paquet(paquet_filename: str, root_path: str) -> None:
+    paquet_name = paquet_filename.replace("_", " ").replace(".csv", "").capitalize()
+    print(paquet_name)
+
+    paquet_filepath = os.path.join(root_path, PAQUETS_DIRNAME, paquet_filename)
+    with open(paquet_filepath, "r") as f:
+        words = []
+        for line in f.readlines():
+            word = line.split(",")[1].strip()
+            if word != "":
+                words.append(word)
+
+    for word in words:
+        print(word)
+
+
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="Réviser ou afficher un paquet.")
 
     parser.add_argument(
-        "-q", "--queue", action="store_true", help="Jeter un coup d'œuil à la queue"
+        "-q", "--queue", action="store_true", help="Afficher la queue des paquets."
     )
     parser.add_argument("-p", "--paquet", help="Choisir le paquet à réviser.")
+    parser.add_argument(
+        "-v",
+        "--view",
+        metavar="PAQUET",
+        help="Afficher tous les mots d'un paquet.",
+    )
 
     return parser.parse_args()
 
@@ -209,6 +231,17 @@ if __name__ == "__main__":
             final_paquet_str += f" {GREEN}({paquets_queue[-1][1]}){RESET}"
         final_paquet_str += f" {CYAN}<-- On est là{RESET}"
         print(final_paquet_str)
+        exit(0)
+
+    if args.view:
+        try:
+            index_to_view = get_index_by_paquet_name(paquets_queue, args.view)
+        except ValueError:
+            print(f"{YELLOW}ATTENTION:{RESET} Paquet {args.view} introuvable")
+            exit(1)
+
+        paquet_name, _ = paquets_queue[index_to_view]
+        view_paquet(paquet_name, root)
         exit(0)
 
     index_to_pop = -1
