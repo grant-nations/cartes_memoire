@@ -52,6 +52,9 @@ def read_paquet(filepath: str) -> list[tuple[str, str, str]]:
 
     with open(filepath, "r") as f:
         for line in f.readlines():
+            if not line.strip():
+                continue
+
             split = line.split(",")
             for i in range(len(split)):
                 split[i] = split[i].strip().lower()
