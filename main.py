@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 
 METADATA_FILENAME = "meta.csv"
 PAQUETS_DIRNAME = "paquets"
+PAQUET_DELIMITER = "|"
 CYAN = "\033[0;36m"
 GREEN = "\033[0;32m"
 YELLOW = "\033[0;33m"
@@ -55,7 +56,7 @@ def read_paquet(filepath: str) -> list[tuple[str, str, str]]:
             if not line.strip():
                 continue
 
-            split = line.split(",")
+            split = line.split(PAQUET_DELIMITER)
             for i in range(len(split)):
                 split[i] = split[i].strip().lower()
 
@@ -176,7 +177,7 @@ def view_paquet(paquet_filename: str, root_path: str) -> None:
     with open(paquet_filepath, "r") as f:
         words = []
         for line in f.readlines():
-            word = line.split(",")[1].strip()
+            word = line.split(PAQUET_DELIMITER)[1].strip()
             if word != "":
                 words.append(word)
 
