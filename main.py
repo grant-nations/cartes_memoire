@@ -176,8 +176,17 @@ def view_paquet(paquet_filename: str, root_path: str) -> None:
     paquet_filepath = os.path.join(root_path, PAQUETS_DIRNAME, paquet_filename)
     with open(paquet_filepath, "r") as f:
         words = []
-        for line in f.readlines():
-            word = line.split(PAQUET_DELIMITER)[1].strip()
+        for line_number, line in enumerate(f, start=1):
+            split = line.split(PAQUET_DELIMITER)
+            if len(split) < 2:
+                if line.strip():
+                    print(
+                        f"{YELLOW}ATTENTION:{RESET} Ligne {line_number} ignorée "
+                        "car elle ne contient pas de réponse."
+                    )
+                continue
+
+            word = split[1].strip()
             if word != "":
                 words.append(word)
 
