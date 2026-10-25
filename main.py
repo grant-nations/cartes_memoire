@@ -88,7 +88,9 @@ def update_paquets_queue(paquet_queue: list[tuple[str, str]], root_path: str) ->
         paquets_queue.remove(paquet_name_to_queue_entry[paquet_name_to_rm])
 
 
-def get_index_by_paquet_name(paquets_queue: list[tuple[str, str]], paquet_name: str) -> int:
+def get_index_by_paquet_name(
+    paquets_queue: list[tuple[str, str]], paquet_name: str
+) -> int:
     for i, p in enumerate(paquets_queue):
         if p[0] == paquet_name:
             return i
@@ -194,11 +196,24 @@ def view_paquet(paquet_filename: str, root_path: str) -> None:
         print(word)
 
 
+def count_paquets(paquets_queue: list[tuple[str, str]], root_path: str) -> int:
+    return sum(
+        len(read_paquet(os.path.join(root_path, PAQUETS_DIRNAME, paquet_filename)))
+        for paquet_filename, _ in paquets_queue
+    )
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Réviser ou afficher un paquet.")
 
     parser.add_argument(
         "-q", "--queue", action="store_true", help="Afficher la queue des paquets."
+    )
+    parser.add_argument(
+        "-c",
+        "--count",
+        action="store_true",
+        help="Compter les mots et expressions de tous les paquets.",
     )
     parser.add_argument("-p", "--paquet", help="Choisir le paquet à réviser.")
     parser.add_argument(
@@ -225,11 +240,16 @@ if __name__ == "__main__":
     if new_len - old_len != 0:
         write_metadata(metadata_path, paquets_queue)
 
+    args = parse_args()
+
+    if args.count:
+        total = count_paquets(paquets_queue, root)
+        print(f"Nombre total de mots et expressions : {total}")
+        exit(0)
+
     if len(paquets_queue) == 0:
         print("Aucun paquet trouvé ; il n'y a rien à faire.")
         exit(0)
-
-    args = parse_args()
 
     if args.queue:
         print("Queue:")
