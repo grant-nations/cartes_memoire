@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "**/paquets/**": "csv (pipe)"
+        "**/paquets/**": "csv (pipe)",
+        "**/staging/**": "csv (pipe)"
     }
 }
